@@ -2,11 +2,26 @@
 
 import thirdwebIcon from "@public/thirdweb.svg";
 import Image from "next/image";
-import { ConnectButton } from "thirdweb/react";
+import { ConnectButton, useReadContract } from "thirdweb/react";
 import { client } from "./client";
 import { sepolia } from "thirdweb/chains";
+import { CONTRACT_ADDRESS } from "../../constants/addresses";
+import { getContract, prepareContractCall } from "thirdweb";
 
 export default function Home() {
+
+  const contract = getContract({address: CONTRACT_ADDRESS, chain: sepolia, client});
+
+  const { data, isLoading } = useReadContract({
+    contract, 
+    method: "function getCounter() view returns (uint256)"
+  })
+
+  // const transaction = prepareContractCall({
+  //   contract,
+  //   method: "function increment()",
+  //   params: [],
+  // })
   return (
     <main className="p-4 pb-10 min-h-[100vh] flex items-center justify-center container max-w-screen-lg mx-auto">
       <div className="py-20">
@@ -22,6 +37,13 @@ export default function Home() {
             }}
           />
         </div>
+
+        {isLoading ? (
+          <p>Loading...</p>
+        ): (
+          <p>dfsds{data}</p>
+        )}
+        {/* <button onClick={() => transaction}>Increment</button> */}
 
         <ThirdwebResources />
       </div>
