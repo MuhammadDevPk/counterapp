@@ -2,14 +2,15 @@
 
 import thirdwebIcon from "@public/thirdweb.svg";
 import Image from "next/image";
-import { ConnectButton, useReadContract } from "thirdweb/react";
+import { ConnectButton, useReadContract, useActiveAccount } from "thirdweb/react";
 import { client } from "./client";
 import { sepolia } from "thirdweb/chains";
 import { CONTRACT_ADDRESS } from "../../constants/addresses";
 import { getContract, prepareContractCall } from "thirdweb";
 
 export default function Home() {
-
+  const account = useActiveAccount();
+  const address = account?.address;
   const contract = getContract({address: CONTRACT_ADDRESS, chain: sepolia, client});
 
   const { data, isLoading } = useReadContract({
