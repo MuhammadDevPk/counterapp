@@ -13,6 +13,10 @@ export default function Home() {
   const address = account?.address;
   const contract = getContract({address: CONTRACT_ADDRESS, chain: sepolia, client});
 
+  const {data: owner, isLoading: ownerLoading} = useReadContract({
+    contract,
+    method: "function owner() view returns (address)"
+  })
   const { data, isLoading } = useReadContract({
     contract, 
     method: "function getCounter() view returns (uint256)"
@@ -52,6 +56,9 @@ export default function Home() {
               onTransactionConfirmed={() => {
                 alert("Decremented!");
               }}
+              onError={(error) => {
+                alert(error.message);
+              }}
             >
               -
             </TransactionButton>
@@ -65,10 +72,32 @@ export default function Home() {
               onTransactionConfirmed={() => {
                 alert("Incremented!")
               }}
+              onTransactionSent={() => {
+                alert("Transaction sent!")
+              }}
+              onError={(error) => {
+                alert(error.message);
+              }}
             >
               + 
             </TransactionButton>
           </>
+        )}
+
+        {address == owner ? (
+          <TransactionButton
+            transaction={() => 
+              prepareContractCall({
+                contract,
+                method: "function reset()",
+              })
+            }>
+            Reset
+          </TransactionButton>
+        ): address ? (
+          <p> You are not the owner</p>
+        ): (
+          <p> Please Connect wallet</p>
         )}
       </div>
     </main>
