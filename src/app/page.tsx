@@ -17,11 +17,11 @@ export default function Home() {
     method: "function getCounter() view returns (uint256)"
   })
 
-  // const transaction = prepareContractCall({
-  //   contract,
-  //   method: "function increment()",
-  //   params: [],
-  // })
+  const transaction = prepareContractCall({
+    contract,
+    method: "function increment()",
+    params: [],
+  })
   return (
     <main className="p-4 pb-10 min-h-[100vh] flex items-center justify-center container max-w-screen-lg mx-auto">
       <div className="py-20">
@@ -43,7 +43,7 @@ export default function Home() {
         ): (
           <p>dfsds{data}</p>
         )}
-        {/* <button onClick={() => transaction}>Increment</button> */}
+        <button onClick={() => transaction}>Increment</button>
 
         <ThirdwebResources />
       </div>
