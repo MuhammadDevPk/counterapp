@@ -2,7 +2,7 @@
 
 import thirdwebIcon from "@public/thirdweb.svg";
 import Image from "next/image";
-import { ConnectButton, useReadContract, useActiveAccount } from "thirdweb/react";
+import { ConnectButton, useReadContract, useActiveAccount, TransactionButton } from "thirdweb/react";
 import { client } from "./client";
 import { sepolia } from "thirdweb/chains";
 import { CONTRACT_ADDRESS } from "../../constants/addresses";
@@ -40,7 +40,36 @@ export default function Home() {
           <p>dfsds{data}</p>
         )}
 
-        <ThirdwebResources />
+        {address && (
+          <>
+          <TransactionButton
+              transaction={() =>
+                prepareContractCall({
+                  contract,
+                  method: "function decrement()",
+                })
+              }
+              onTransactionConfirmed={() => {
+                alert("Decremented!");
+              }}
+            >
+              -
+            </TransactionButton>
+            <TransactionButton
+              transaction={() =>
+                prepareContractCall({
+                  contract,
+                  method: "function increment()",
+                })
+              }
+              onTransactionConfirmed={() => {
+                alert("Incremented!")
+              }}
+            >
+              + 
+            </TransactionButton>
+          </>
+        )}
       </div>
     </main>
   );
